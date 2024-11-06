@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\DeliveryRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: DeliveryRepository::class)]
 class Delivery
@@ -13,26 +14,29 @@ class Delivery
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $orderId = null;
+    #[ORM\Column(type: 'uuid')]
+    private ?Uuid $uuid = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $restaurantId = null;
+    #[ORM\Column(type: 'uuid')]
+    private ?Uuid $orderUuid = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $restaurantName = null;
-
-    #[ORM\Column(length: 255)]
-    private ?string $restaurantAddress = null;
-
-    #[ORM\Column(length: 255)]
-    private ?string $userId = null;
+    #[ORM\Column(type: 'uuid')]
+    private ?Uuid $userUuid = null;
 
     #[ORM\Column(length: 255)]
     private ?string $userFirstname = null;
 
     #[ORM\Column(length: 255)]
+    private ?string $userLastname = null;
+
+    #[ORM\Column(length: 255)]
     private ?string $userAddress = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $userPhoneNumber = null;
+
+    #[ORM\Column(type: 'uuid')]
+    private ?Uuid $delivererUuid = null;
 
     #[ORM\Column(length: 255)]
     private ?string $status = null;
@@ -42,62 +46,38 @@ class Delivery
         return $this->id;
     }
 
-    public function getOrderId(): ?string
+    public function getUuid(): ?Uuid
     {
-        return $this->orderId;
+        return $this->uuid;
     }
 
-    public function setOrderId(string $orderId): static
+    public function setUuid(Uuid $uuid): static
     {
-        $this->orderId = $orderId;
+        $this->uuid = $uuid;
 
         return $this;
     }
 
-    public function getRestaurantId(): ?string
+    public function getOrderUuid(): ?Uuid
     {
-        return $this->restaurantId;
+        return $this->orderUuid;
     }
 
-    public function setRestaurantId(string $restaurantId): static
+    public function setOrderUuid(Uuid $orderUuid): static
     {
-        $this->restaurantId = $restaurantId;
+        $this->orderUuid = $orderUuid;
 
         return $this;
     }
 
-    public function getRestaurantName(): ?string
+    public function getUserUuid(): ?Uuid
     {
-        return $this->restaurantName;
+        return $this->userUuid;
     }
 
-    public function setRestaurantName(string $restaurantName): static
+    public function setUserUuid(Uuid $userUuid): static
     {
-        $this->restaurantName = $restaurantName;
-
-        return $this;
-    }
-
-    public function getRestaurantAddress(): ?string
-    {
-        return $this->restaurantAddress;
-    }
-
-    public function setRestaurantAddress(string $restaurantAddress): static
-    {
-        $this->restaurantAddress = $restaurantAddress;
-
-        return $this;
-    }
-
-    public function getUserId(): ?string
-    {
-        return $this->userId;
-    }
-
-    public function setUserId(string $userId): static
-    {
-        $this->userId = $userId;
+        $this->userUuid = $userUuid;
 
         return $this;
     }
@@ -114,6 +94,18 @@ class Delivery
         return $this;
     }
 
+    public function getUserLastname(): ?string
+    {
+        return $this->userLastname;
+    }
+
+    public function setUserLastname(string $userLastname): static
+    {
+        $this->userLastname = $userLastname;
+
+        return $this;
+    }
+
     public function getUserAddress(): ?string
     {
         return $this->userAddress;
@@ -122,6 +114,30 @@ class Delivery
     public function setUserAddress(string $userAddress): static
     {
         $this->userAddress = $userAddress;
+
+        return $this;
+    }
+
+    public function getUserPhoneNumber(): ?string
+    {
+        return $this->userPhoneNumber;
+    }
+
+    public function setUserPhoneNumber(string $userPhoneNumber): static
+    {
+        $this->userPhoneNumber = $userPhoneNumber;
+
+        return $this;
+    }
+
+    public function getDelivererUuid(): ?Uuid
+    {
+        return $this->delivererUuid;
+    }
+
+    public function setDelivererUuid(Uuid $delivererUuid): static
+    {
+        $this->delivererUuid = $delivererUuid;
 
         return $this;
     }

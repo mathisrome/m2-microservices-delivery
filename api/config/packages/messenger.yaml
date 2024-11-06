@@ -1,0 +1,28 @@
+framework:
+    messenger:
+        # Uncomment this (and the failed transport below) to send failed messages to this transport for later handling.
+        # failure_transport: failed
+
+        transports:
+            delivery_receive_order:
+                dsn: '%env(MESSENGER_DELIVERY_RECEIVE_ORDER_TRANSPORT_DSN)%'
+            delivery_receive_order_status:
+                dsn: '%env(MESSENGER_DELIVERY_RECEIVE_ORDER_STATUS_TRANSPORT_DSN)%'
+            delivery_update_order_status_order:
+                dsn: '%env(MESSENGER_DELIVERY_UPDATE_ORDER_STATUS_ORDER_TRANSPORT_DSN)%'
+            delivery_update_order_status_kitchen:
+                dsn: '%env(MESSENGER_DELIVERY_UPDATE_ORDER_STATUS_KITCHEN_TRANSPORT_DSN)%'
+
+        routing:
+            # Route your messages to the transports
+            App\Message\ReceiveOrderMessage: delivery_receive_order
+            App\Message\ReceiveOrderStatusMessage: delivery_receive_order_status
+            App\Message\UpdateDeliveryStatusMessage: [delivery_update_order_status_order, delivery_update_order_status_kitchen]
+
+# when@test:
+#    framework:
+#        messenger:
+#            transports:
+#                # replace with your transport name here (e.g., my_transport: 'in-memory://')
+#                # For more Messenger testing tools, see https://github.com/zenstruck/messenger-test
+#                async: 'in-memory://'

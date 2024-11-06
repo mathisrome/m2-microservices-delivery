@@ -3,12 +3,14 @@
 namespace App\Controller;
 
 use App\Entity\Delivery;
+use App\Message\UpdateDeliveryStatusMessage;
 use App\Repository\DeliveryRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -42,47 +44,15 @@ class DeliveryController extends AbstractController
         return $this->json($delivery);
     }
 
-    // Commande prête à être récupérée
-    #[Route('{id}/isready', name: 'isready', methods: ['GET'])]
-    public function isready(Delivery $delivery): Response
+    #[Route('/{id}', name: 'delivery', methods: ['PUT'])]
+    public function deliveryUpdate(Request $request, EntityManagerInterface $manager, MessageBusInterface $bus, Delivery $delivery): Response
     {
-        $delivery->setStatus(\OrderStatus::READY->value);
-        $this->em->persist($delivery);
-        $this->em->flush();
+        $delivery->setStatus($request->request->get('status'));
 
-        return $this->json($delivery);
-    }
+        $manager->persist($delivery);
+        $manager->flush();
 
-    // Changer le status d'une commande comme livraison en cours
-    #[Route('{id}/picked', name: 'delivery', methods: ['PUT'])]
-    public function picked(Delivery $delivery): Response
-    {
-        $delivery->setStatus(\OrderStatus::IN_DELIVERY->value);
-        $this->em->persist($delivery);
-        $this->em->flush();
-
-        return $this->json($delivery);
-    }
-
-    // Changer le status d'une commande comme livrée
-    #[Route('{id}/delivered', name: 'delivery', methods: ['PUT'])]
-    public function delivered(Delivery $delivery): Response
-    {
-        $delivery->setStatus(\OrderStatus::DELIVERED->value);
-        $this->em->flush();
-
-        return $this->json($delivery);
-    }
-
-    // Création d'une nouvelle commande
-    #[Route('create', name: 'create', methods: ['POST'])]
-    public function create(
-        #[MapRequestPayload] Delivery $delivery,
-        Request $request
-    ): Response
-    {
-        $this->em->persist($delivery);
-        $this->em->flush();
+        $bus->dispatch(new UpdateDeliveryStatusMessage($delivery->getUuid(), $delivery->getStatus()));
 
         return $this->json($delivery);
     }
