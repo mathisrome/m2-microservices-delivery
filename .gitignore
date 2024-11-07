@@ -7,3 +7,6 @@
 /infra/volumes
 /infra/logs
 ###< infra ###
+
+app
+vendor
