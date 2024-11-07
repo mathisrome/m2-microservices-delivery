@@ -67,7 +67,11 @@ class DeliveryController extends AbstractController
     #[Route('/{id}', name: 'delivery', methods: ['GET'])]
     public function delivery(Delivery $delivery): Response
     {
-        return $this->json($delivery);
+        return $this->json($delivery, context: [
+            "groups" => [
+                "delivery:detail"
+            ]
+        ]);
     }
 
     #[Route('/{id}', name: 'delivery', methods: ['PUT'])]
@@ -82,7 +86,11 @@ class DeliveryController extends AbstractController
 
         $bus->dispatch(new UpdateDeliveryStatusMessage($delivery->getOrderUuid(), $delivery->getStatus()->value));
 
-        return $this->json($delivery);
+        return $this->json($delivery, context: [
+            "groups" => [
+                "delivery:detail"
+            ]
+        ]);
     }
 
 }
