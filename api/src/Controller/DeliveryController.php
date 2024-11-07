@@ -49,7 +49,11 @@ class DeliveryController extends AbstractController
 
         $em->flush();
 
-        return $this->json($delivery);
+        return $this->json($delivery, context: [
+            "groups" => [
+                "delivery:detail"
+            ]
+        ]);
     }
 
     // Aperçu d'une commande pour le livreur

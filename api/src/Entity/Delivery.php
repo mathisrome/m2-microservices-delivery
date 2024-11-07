@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Enums\OrderStatus;
 use App\Repository\DeliveryRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: DeliveryRepository::class)]
@@ -13,25 +14,32 @@ class Delivery
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(["delivery:detail"])]
     private ?int $id = null;
 
     #[ORM\Column(type: 'uuid')]
+    #[Groups(["delivery:detail"])]
     private ?Uuid $uuid = null;
 
     #[ORM\Column(type: 'uuid')]
+    #[Groups(["delivery:detail"])]
     private ?Uuid $orderUuid = null;
 
     #[ORM\Column(length: 255,enumType: OrderStatus::class)]
+    #[Groups(["delivery:detail"])]
     private ?OrderStatus $status = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(["delivery:detail"])]
     private ?string $orderAddress = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable:   false)]
+    #[Groups(["delivery:detail"])]
     private ?User $user = null;
 
     #[ORM\ManyToOne(inversedBy: 'deliveries')]
+    #[Groups(["delivery:detail"])]
     private ?User $deliverer = null;
 
     public function getId(): ?int

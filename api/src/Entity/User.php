@@ -6,6 +6,7 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
@@ -14,18 +15,23 @@ class User
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(["delivery:detail"])]
     private ?int $id = null;
 
     #[ORM\Column(type: 'uuid')]
+    #[Groups(["delivery:detail"])]
     private ?Uuid $uuid = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(["delivery:detail"])]
     private ?string $firstname = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(["delivery:detail"])]
     private ?string $lastname = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(["delivery:detail"])]
     private ?string $phoneNumber = null;
 
     /**
