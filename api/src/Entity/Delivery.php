@@ -20,9 +20,6 @@ class Delivery
     #[ORM\Column(type: 'uuid')]
     private ?Uuid $orderUuid = null;
 
-    #[ORM\Column(type: 'uuid')]
-    private ?Uuid $delivererUuid = null;
-
     #[ORM\Column(length: 255)]
     private ?string $status = null;
 
@@ -30,8 +27,11 @@ class Delivery
     private ?string $orderAddress = null;
 
     #[ORM\ManyToOne]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable:   false)]
     private ?User $user = null;
+
+    #[ORM\ManyToOne(inversedBy: 'deliveries')]
+    private ?User $deliverer = null;
 
     public function getId(): ?int
     {
@@ -58,18 +58,6 @@ class Delivery
     public function setOrderUuid(Uuid $orderUuid): static
     {
         $this->orderUuid = $orderUuid;
-
-        return $this;
-    }
-
-    public function getDelivererUuid(): ?Uuid
-    {
-        return $this->delivererUuid;
-    }
-
-    public function setDelivererUuid(Uuid $delivererUuid): static
-    {
-        $this->delivererUuid = $delivererUuid;
 
         return $this;
     }
@@ -106,6 +94,18 @@ class Delivery
     public function setUser(?User $user): static
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getDeliverer(): ?User
+    {
+        return $this->deliverer;
+    }
+
+    public function setDeliverer(?User $deliverer): static
+    {
+        $this->deliverer = $deliverer;
 
         return $this;
     }

@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Uuid;
 
@@ -25,6 +27,17 @@ class User
 
     #[ORM\Column(length: 255)]
     private ?string $phoneNumber = null;
+
+    /**
+     * @var Collection<int, Delivery>
+     */
+    #[ORM\OneToMany(targetEntity: Delivery::class, mappedBy: 'deliverer')]
+    private Collection $deliveries;
+
+    public function __construct()
+    {
+        $this->deliveries = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -75,6 +88,36 @@ class User
     public function setPhoneNumber(string $phoneNumber): static
     {
         $this->phoneNumber = $phoneNumber;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Delivery>
+     */
+    public function getDeliveries(): Collection
+    {
+        return $this->deliveries;
+    }
+
+    public function addDelivery(Delivery $delivery): static
+    {
+        if (!$this->deliveries->contains($delivery)) {
+            $this->deliveries->add($delivery);
+            $delivery->setDeliverer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDelivery(Delivery $delivery): static
+    {
+        if ($this->deliveries->removeElement($delivery)) {
+            // set the owning side to null (unless already changed)
+            if ($delivery->getDeliverer() === $this) {
+                $delivery->setDeliverer(null);
+            }
+        }
 
         return $this;
     }
