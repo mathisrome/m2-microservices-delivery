@@ -3,12 +3,14 @@
 namespace App\MessageHandler;
 
 use App\Entity\User;
-use App\Message\ReceiveCustomerMessage;
+use App\Message\UserMessage;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Uid\Uuid;
 
-class ReceiveCustomerHandler
+#[AsMessageHandler]
+class UserMessageHandler
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
@@ -17,7 +19,7 @@ class ReceiveCustomerHandler
     {
     }
 
-    public function __invoke(ReceiveCustomerMessage $message)
+    public function __invoke(UserMessage $message)
     {
         $user = $this->userRepository->findOneBy(['uuid' => $message->uuid]);
 
@@ -26,8 +28,8 @@ class ReceiveCustomerHandler
             $user->setUuid(new Uuid($message->uuid));
         }
 
-        $user->setFirstname($message->firstname);
-        $user->setLastname($message->lastname);
+        $user->setFirstname($message->firstName);
+        $user->setLastname($message->lastName);
         $user->setPhoneNumber($message->phoneNumber);
 
         $this->entityManager->persist($user);

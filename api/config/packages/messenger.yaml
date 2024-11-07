@@ -20,7 +20,7 @@ framework:
             App\Message\ReceiveOrderMessage: delivery_receive_order
             App\Message\ReceiveOrderStatusMessage: delivery_receive_order_status
             App\Message\UpdateDeliveryStatusMessage: [delivery_update_order_status_order, delivery_update_order_status_kitchen]
-            App\Message\ReceiveCustomerMessage: delivery_receive_customer
+            App\Message\UserMessage: delivery_receive_customer
 
 # when@test:
 #    framework:
