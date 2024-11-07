@@ -28,7 +28,7 @@ class DeliveryController extends AbstractController
     #[Route('', name: 'list', methods: ['GET'])]
     public function list(): Response
     {
-        $deliveries = $this->deliveryRepository->findAll();
+        $deliveries = $this->deliveryRepository->findByStatus(OrderStatus::READY);
 
         return $this->json($deliveries);
     }
