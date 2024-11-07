@@ -24,9 +24,6 @@ class User
     private ?string $lastname = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $address = null;
-
-    #[ORM\Column(length: 255)]
     private ?string $phoneNumber = null;
 
     public function getId(): ?int
@@ -66,18 +63,6 @@ class User
     public function setLastname(string $lastname): static
     {
         $this->lastname = $lastname;
-
-        return $this;
-    }
-
-    public function getAddress(): ?string
-    {
-        return $this->address;
-    }
-
-    public function setAddress(string $address): static
-    {
-        $this->address = $address;
 
         return $this;
     }
