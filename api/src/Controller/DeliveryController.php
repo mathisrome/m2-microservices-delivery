@@ -45,12 +45,12 @@ class DeliveryController extends AbstractController
     }
 
     #[Route('/{id}', name: 'delivery', methods: ['PUT'])]
-    public function deliveryUpdate(Request $request, EntityManagerInterface $manager, MessageBusInterface $bus, Delivery $delivery): Response
+    public function deliveryUpdate(Request $request, MessageBusInterface $bus, Delivery $delivery): Response
     {
         $delivery->setStatus($request->request->get('status'));
 
-        $manager->persist($delivery);
-        $manager->flush();
+        $this->em->persist($delivery);
+        $this->em->flush();
 
         $bus->dispatch(new UpdateDeliveryStatusMessage($delivery->getUuid(), $delivery->getStatus()));
 

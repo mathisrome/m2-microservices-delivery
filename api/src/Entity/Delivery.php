@@ -23,23 +23,18 @@ class Delivery
     #[ORM\Column(type: 'uuid')]
     private ?Uuid $userUuid = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $userFirstname = null;
-
-    #[ORM\Column(length: 255)]
-    private ?string $userLastname = null;
-
-    #[ORM\Column(length: 255)]
-    private ?string $userAddress = null;
-
-    #[ORM\Column(length: 255)]
-    private ?string $userPhoneNumber = null;
-
     #[ORM\Column(type: 'uuid')]
     private ?Uuid $delivererUuid = null;
 
     #[ORM\Column(length: 255)]
     private ?string $status = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $orderAddress = null;
+
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
 
     public function getId(): ?int
     {
@@ -82,54 +77,6 @@ class Delivery
         return $this;
     }
 
-    public function getUserFirstname(): ?string
-    {
-        return $this->userFirstname;
-    }
-
-    public function setUserFirstname(string $userFirstname): static
-    {
-        $this->userFirstname = $userFirstname;
-
-        return $this;
-    }
-
-    public function getUserLastname(): ?string
-    {
-        return $this->userLastname;
-    }
-
-    public function setUserLastname(string $userLastname): static
-    {
-        $this->userLastname = $userLastname;
-
-        return $this;
-    }
-
-    public function getUserAddress(): ?string
-    {
-        return $this->userAddress;
-    }
-
-    public function setUserAddress(string $userAddress): static
-    {
-        $this->userAddress = $userAddress;
-
-        return $this;
-    }
-
-    public function getUserPhoneNumber(): ?string
-    {
-        return $this->userPhoneNumber;
-    }
-
-    public function setUserPhoneNumber(string $userPhoneNumber): static
-    {
-        $this->userPhoneNumber = $userPhoneNumber;
-
-        return $this;
-    }
-
     public function getDelivererUuid(): ?Uuid
     {
         return $this->delivererUuid;
@@ -150,6 +97,30 @@ class Delivery
     public function setStatus(string $status): static
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    public function getOrderAddress(): ?string
+    {
+        return $this->orderAddress;
+    }
+
+    public function setOrderAddress(string $orderAddress): static
+    {
+        $this->orderAddress = $orderAddress;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
 
         return $this;
     }

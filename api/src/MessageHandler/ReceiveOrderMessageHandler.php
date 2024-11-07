@@ -3,6 +3,7 @@
 namespace App\MessageHandler;
 use App\Entity\Delivery;
 use App\Message\ReceiveOrderMessage;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Uid\Uuid;
@@ -12,6 +13,7 @@ class ReceiveOrderMessageHandler
 {
    public function __construct(
        private readonly EntityManagerInterface $entityManager,
+       private readonly UserRepository $userRepository,
    )
    {
    }
@@ -22,11 +24,11 @@ class ReceiveOrderMessageHandler
         $delivery->setUuid(Uuid::v4());
         $delivery->setOrderUuid(new Uuid($message->orderUuid));
         $delivery->setUserUuid(new Uuid($message->userUuid));
-        $delivery->setUserFirstname($message->userFirstname);
-        $delivery->setUserLastname($message->userLastname);
-        $delivery->setUserAddress($message->userAddress);
-        $delivery->setUserPhoneNumber($message->userPhoneNumber);
+        $delivery->setOrderAddress($message->orderAddress);
         $delivery->setStatus($message->status);
+
+        $user = $this->userRepository->findOneBy(['uuid' => $message->userUuid]);
+        $delivery->setUser($user);
 
         $this->entityManager->persist($delivery);
         $this->entityManager->flush();
