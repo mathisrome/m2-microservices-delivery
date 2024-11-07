@@ -44,7 +44,8 @@ class DeliveryController extends AbstractController
     public function attribuateDeliverer(
         Request                $request,
         EntityManagerInterface $em,
-        Delivery               $delivery
+        Delivery               $delivery,
+        MessageBusInterface $messageBus
     )
     {
         $body = json_decode($request->getContent(), true);
@@ -55,6 +56,7 @@ class DeliveryController extends AbstractController
         $delivery->setStatus(OrderStatus::IN_DELIVERY);
 
         $em->flush();
+        $messageBus->dispatch(new UpdateDeliveryStatusMessage($delivery->getOrderUuid(), $delivery->getStatus()->value));
 
         return $this->json($delivery, context: [
             "groups" => [
