@@ -33,7 +33,11 @@ class DeliveryController extends AbstractController
             $this->deliveryRepository->findByStatus(OrderStatus::IN_DELIVERY)
         );
 
-        return $this->json($deliveries);
+        return $this->json($deliveries, context: [
+            "groups" => [
+                "delivery:detail"
+            ]
+        ]);
     }
 
     #[Route('/{id}', name: 'attribuateDeliverer', methods: ['POST'])]
