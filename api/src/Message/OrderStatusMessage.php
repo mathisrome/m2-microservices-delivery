@@ -2,7 +2,7 @@
 
 namespace App\Message;
 
-class ReceiveOrderStatusMessage
+class OrderStatusMessage
 {
     public function __construct(
         public string $orderUuid,

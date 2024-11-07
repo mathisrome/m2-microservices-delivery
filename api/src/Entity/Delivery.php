@@ -21,9 +21,6 @@ class Delivery
     private ?Uuid $orderUuid = null;
 
     #[ORM\Column(type: 'uuid')]
-    private ?Uuid $userUuid = null;
-
-    #[ORM\Column(type: 'uuid')]
     private ?Uuid $delivererUuid = null;
 
     #[ORM\Column(length: 255)]
@@ -61,18 +58,6 @@ class Delivery
     public function setOrderUuid(Uuid $orderUuid): static
     {
         $this->orderUuid = $orderUuid;
-
-        return $this;
-    }
-
-    public function getUserUuid(): ?Uuid
-    {
-        return $this->userUuid;
-    }
-
-    public function setUserUuid(Uuid $userUuid): static
-    {
-        $this->userUuid = $userUuid;
 
         return $this;
     }

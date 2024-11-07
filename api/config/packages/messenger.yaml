@@ -4,23 +4,23 @@ framework:
         # failure_transport: failed
 
         transports:
-            delivery_receive_order:
-                dsn: '%env(MESSENGER_DELIVERY_RECEIVE_ORDER_TRANSPORT_DSN)%'
-            delivery_receive_order_status:
-                dsn: '%env(MESSENGER_DELIVERY_RECEIVE_ORDER_STATUS_TRANSPORT_DSN)%'
-            delivery_update_order_status_order:
-                dsn: '%env(MESSENGER_DELIVERY_UPDATE_ORDER_STATUS_ORDER_TRANSPORT_DSN)%'
-            delivery_update_order_status_kitchen:
-                dsn: '%env(MESSENGER_DELIVERY_UPDATE_ORDER_STATUS_KITCHEN_TRANSPORT_DSN)%'
-            delivery_receive_customer:
-                dsn: '%env(MESSENGER_DELIVERY_RECEIVE_CUSTOMER_TRANSPORT_DSN)%'
+          delivery_orders:
+                dsn: '%env(MESSENGER_DELIVERY_ORDER_TRANSPORT_DSN)%'
+          delivery_order_status:
+              dsn: '%env(MESSENGER_DELIVERY_ORDER_STATUS_TRANSPORT_DSN)%'
+          delivery_update_order_status_order:
+              dsn: '%env(MESSENGER_DELIVERY_UPDATE_ORDER_STATUS_ORDER_TRANSPORT_DSN)%'
+          delivery_update_order_status_kitchen:
+              dsn: '%env(MESSENGER_DELIVERY_UPDATE_ORDER_STATUS_KITCHEN_TRANSPORT_DSN)%'
+          delivery_users:
+              dsn: '%env(MESSENGER_DELIVERY_USERS_TRANSPORT_DSN)%'
 
         routing:
             # Route your messages to the transports
-            App\Message\ReceiveOrderMessage: delivery_receive_order
-            App\Message\ReceiveOrderStatusMessage: delivery_receive_order_status
+            App\Message\OrderMessage: delivery_orders
+            App\Message\OrderStatusMessage: delivery_order_status
             App\Message\UpdateDeliveryStatusMessage: [delivery_update_order_status_order, delivery_update_order_status_kitchen]
-            App\Message\UserMessage: delivery_receive_customer
+            App\Message\UserMessage: delivery_users
 
 # when@test:
 #    framework:

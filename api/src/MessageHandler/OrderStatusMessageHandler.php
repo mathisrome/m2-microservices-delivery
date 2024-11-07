@@ -2,13 +2,13 @@
 
 namespace App\MessageHandler;
 
-use App\Message\ReceiveOrderStatusMessage;
+use App\Message\OrderStatusMessage;
 use App\Repository\DeliveryRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
-class ReceiveOrderStatusMessageHandler
+class OrderStatusMessageHandler
 {
     public function __construct(
         private readonly EntityManagerInterface $em,
@@ -17,7 +17,7 @@ class ReceiveOrderStatusMessageHandler
     {
     }
 
-    public function __invoke(ReceiveOrderStatusMessage $message)
+    public function __invoke(OrderStatusMessage $message)
     {
         $delivery = $this->deliveryRepo->findOneBy(['orderUuid' => $message->orderUuid]);
         $delivery->setStatus($message->status);
