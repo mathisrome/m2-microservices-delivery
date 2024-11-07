@@ -5,7 +5,7 @@ namespace App\Message;
 class UpdateDeliveryStatusMessage
 {
     public function __construct(
-        public string $deliveryUuid,
+        public string $orderUuid,
         public string $status,
     )
     {

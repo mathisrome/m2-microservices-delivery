@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Enums\OrderStatus;
 use App\Repository\DeliveryRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Uuid;
@@ -20,8 +21,8 @@ class Delivery
     #[ORM\Column(type: 'uuid')]
     private ?Uuid $orderUuid = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $status = null;
+    #[ORM\Column(length: 255,enumType: OrderStatus::class)]
+    private ?OrderStatus $status = null;
 
     #[ORM\Column(length: 255)]
     private ?string $orderAddress = null;
@@ -62,12 +63,12 @@ class Delivery
         return $this;
     }
 
-    public function getStatus(): ?string
+    public function getStatus(): ?OrderStatus
     {
         return $this->status;
     }
 
-    public function setStatus(string $status): static
+    public function setStatus(OrderStatus $status): static
     {
         $this->status = $status;
 

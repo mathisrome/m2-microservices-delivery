@@ -2,6 +2,7 @@
 
 namespace App\MessageHandler;
 use App\Entity\Delivery;
+use App\Enums\OrderStatus;
 use App\Message\OrderMessage;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -33,7 +34,8 @@ class OrderMessageHandler
                 $message->country,
             )
         );
-        $delivery->setStatus($message->status);
+
+        $delivery->setStatus(OrderStatus::fromInt($message->status));
 
         $user = $this->userRepository->findOneBy(['uuid' => $message->user]);
         $delivery->setUser($user);

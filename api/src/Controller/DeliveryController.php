@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Delivery;
 use App\Entity\User;
+use App\Enums\OrderStatus;
 use App\Message\UpdateDeliveryStatusMessage;
 use App\Repository\DeliveryRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -44,6 +45,9 @@ class DeliveryController extends AbstractController
         $user = $em->getRepository(User::class)->findOneByUuid($body['uuid']);
 
         $delivery->setDeliverer($user);
+        $delivery->setStatus(OrderStatus::IN_DELIVERY);
+
+        $em->flush();
 
         return $this->json($delivery);
     }
@@ -58,12 +62,14 @@ class DeliveryController extends AbstractController
     #[Route('/{id}', name: 'delivery', methods: ['PUT'])]
     public function deliveryUpdate(Request $request, MessageBusInterface $bus, Delivery $delivery): Response
     {
-        $delivery->setStatus($request->request->get('status'));
+        $body = json_decode($request->getContent(), true);
+
+        $delivery->setStatus(OrderStatus::tryFrom($body["status"]));
 
         $this->em->persist($delivery);
         $this->em->flush();
 
-        $bus->dispatch(new UpdateDeliveryStatusMessage($delivery->getUuid(), $delivery->getStatus()));
+        $bus->dispatch(new UpdateDeliveryStatusMessage($delivery->getOrderUuid(), $delivery->getStatus()->value));
 
         return $this->json($delivery);
     }

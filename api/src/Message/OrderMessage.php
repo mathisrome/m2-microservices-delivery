@@ -12,7 +12,7 @@ class OrderMessage
         public string $city,
         public string $country,
         public string $postalCode,
-        public string $status
+        public int $status
     )
     {
 
